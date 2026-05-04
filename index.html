@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StoryEQ + Cowork Architecture</title>
+<meta name="description" content="Interactive architecture map of the full StoryEQ infrastructure on Cowork — engagement workflow, skills, data layers, connected services, and the Personal Context Engine.">
+<meta property="og:title" content="StoryEQ + Cowork Architecture">
+<meta property="og:description" content="Interactive infrastructure map — click any element to expand. 26 skills, 10 engagement steps, 6 connectors.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { color-scheme: light; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Inter', -apple-system, system-ui, sans-serif;
+    background: #FAFAF9;
+    color: #272521;
+    padding: 24px;
+    line-height: 1.5;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+  .header-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 4px;
+  }
+  .logo-mark {
+    width: 36px;
+    height: 36px;
+    background: #B54740;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-family: 'Big Shoulders Display', sans-serif;
+    font-weight: 800;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  h1 {
+    font-family: 'Big Shoulders Display', -apple-system, system-ui, sans-serif;
+    font-size: 26px;
+    font-weight: 800;
+    color: #272521;
+    letter-spacing: -0.3px;
+  }
+  .page-sub {
+    font-size: 13px;
+    color: #999;
+    margin-bottom: 24px;
+  }
+  .arch-section { margin-bottom: 24px; }
+  .arch-header {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #B54740;
+    margin-bottom: 10px;
+    padding-bottom: 4px;
+    border-bottom: 2px solid #B54740;
+  }
+  .layer-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+  }
+  .layer-card {
+    background: #fff;
+    border: 1px solid #e0dfdd;
+    border-radius: 8px;
+    padding: 10px 14px;
+    flex: 1;
+    min-width: 170px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .layer-card:hover {
+    border-color: #B54740;
+    box-shadow: 0 2px 8px rgba(181,71,64,0.1);
+  }
+  .layer-card.expanded {
+    border-color: #4B7081;
+    background: #f8fbfc;
+  }
+  .card-title {
+    font-weight: 700;
+    font-size: 13px;
+    color: #272521;
+    margin-bottom: 2px;
+  }
+  .card-subtitle {
+    font-size: 11px;
+    color: #888;
+  }
+  .card-detail {
+    display: none;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid #e0dfdd;
+    font-size: 11.5px;
+    line-height: 1.55;
+    color: #555;
+  }
+  .card-detail.show { display: block; }
+
+  .stat-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+  .stat-box {
+    text-align: center;
+    padding: 14px 14px;
+    background: #fff;
+    border: 1px solid #e0dfdd;
+    border-radius: 8px;
+    flex: 1;
+    min-width: 90px;
+  }
+  .stat-num {
+    font-size: 28px;
+    font-weight: 800;
+    color: #B54740;
+    line-height: 1;
+    font-family: 'Big Shoulders Display', sans-serif;
+  }
+  .stat-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #888;
+    margin-top: 4px;
+  }
+
+  .flow-row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-wrap: wrap;
+    margin: 8px 0;
+  }
+  .flow-step {
+    background: #B54740;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 6px 11px;
+    border-radius: 6px;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    text-align: center;
+    line-height: 1.3;
+  }
+  .flow-step:hover { background: #933a34; }
+  .flow-step.active { background: #4B7081; }
+  .flow-step span { font-weight: 400; font-size: 10px; }
+  .flow-arrow { color: #B54740; font-size: 15px; font-weight: 700; }
+
+  .detail-panel {
+    display: none;
+    background: #fff;
+    border: 1px solid #4B7081;
+    border-radius: 8px;
+    padding: 14px;
+    margin-top: 8px;
+    font-size: 12px;
+    line-height: 1.6;
+  }
+  .detail-panel.show { display: block; }
+
+  .badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 10px;
+    margin-right: 4px;
+  }
+  .badge-red { background: #B54740; color: #fff; }
+  .badge-blue { background: #4B7081; color: #fff; }
+  .badge-gold { background: #D8B66A; color: #272521; }
+  .badge-gray { background: #ddd; color: #555; }
+
+  .section-note {
+    font-size: 11px;
+    color: #aaa;
+    font-style: italic;
+    margin-top: 4px;
+  }
+
+  .legend {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 10px;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .legend-swatch {
+    width: 14px;
+    height: 4px;
+    border-radius: 2px;
+  }
+
+  .skill-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 5px;
+  }
+  .skill-pill {
+    font-size: 11px;
+    padding: 5px 9px;
+    border-radius: 6px;
+    background: #fff;
+    border: 1px solid #e0dfdd;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .skill-pill.core { border-left: 3px solid #B54740; }
+  .skill-pill.process { border-left: 3px solid #4B7081; }
+  .skill-pill.util { border-left: 3px solid #D8B66A; }
+  .skill-pill.gap {
+    border-left: 3px solid #ccc;
+    background: repeating-linear-gradient(45deg, transparent, transparent 3px, rgba(0,0,0,0.02) 3px, rgba(0,0,0,0.02) 6px);
+    color: #999;
+    font-style: italic;
+  }
+
+  .connector-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+  }
+  .connector {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #fff;
+    border: 1px solid #e0dfdd;
+    border-radius: 8px;
+    padding: 7px 12px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .connector-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #4B7081;
+  }
+
+  .gap-flag {
+    background: #fffcf0;
+    border: 1px solid #D8B66A;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-top: 6px;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+  .gap-flag:first-child { margin-top: 0; }
+  .gap-flag strong { color: #B54740; }
+
+  .tab-row {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 14px;
+    border-bottom: 2px solid #e0dfdd;
+    padding-bottom: 0;
+    overflow-x: auto;
+  }
+  .tab-btn {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    padding: 8px 14px;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    cursor: pointer;
+    color: #888;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+    font-family: 'Inter', sans-serif;
+  }
+  .tab-btn:hover { color: #272521; }
+  .tab-btn.active {
+    color: #B54740;
+    border-bottom-color: #B54740;
+  }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  .footer {
+    margin-top: 40px;
+    padding-top: 16px;
+    border-top: 1px solid #e0dfdd;
+    font-size: 11px;
+    color: #aaa;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .footer a {
+    color: #4B7081;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .footer a:hover { text-decoration: underline; }
+
+  @media (max-width: 600px) {
+    body { padding: 16px; }
+    h1 { font-size: 22px; }
+    .stat-row { gap: 6px; }
+    .stat-box { min-width: 70px; padding: 10px 8px; }
+    .stat-num { font-size: 22px; }
+    .layer-card { min-width: 100%; }
+    .skill-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
+    .flow-step { padding: 5px 8px; font-size: 10px; }
+    .flow-step span { font-size: 9px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header-bar">
+  <div class="logo-mark">S</div>
+  <h1>StoryEQ + Cowork Architecture</h1>
+</div>
+<div class="page-sub">Interactive infrastructure map - click any element to expand</div>
+
+<!-- Stats -->
+<div class="stat-row">
+  <div class="stat-box"><div class="stat-num">26</div><div class="stat-label">Skills</div></div>
+  <div class="stat-box"><div class="stat-num">10</div><div class="stat-label">Engagement Steps</div></div>
+  <div class="stat-box"><div class="stat-num">6</div><div class="stat-label">Connectors</div></div>
+  <div class="stat-box"><div class="stat-num">20+</div><div class="stat-label">Active Clients</div></div>
+  <div class="stat-box"><div class="stat-num">15</div><div class="stat-label">Memory Files</div></div>
+</div>
+
+<!-- Tabs -->
+<div class="tab-row">
+  <button class="tab-btn active" onclick="showTab('workflow')">Workflow</button>
+  <button class="tab-btn" onclick="showTab('skills')">Skills</button>
+  <button class="tab-btn" onclick="showTab('data')">Data Layers</button>
+  <button class="tab-btn" onclick="showTab('connectors')">Connectors</button>
+  <button class="tab-btn" onclick="showTab('pce')">Practitioner PCE</button>
+  <button class="tab-btn" onclick="showTab('roadmap')">Roadmap</button>
+</div>
+
+<!-- TAB: Workflow -->
+<div class="tab-panel active" id="tab-workflow">
+  <div class="arch-section">
+    <div class="arch-header">Engagement Workflow - The Canonical Sequence</div>
+    <div class="flow-row" id="flowRow">
+      <div class="flow-step" onclick="toggleStep(0)">Step 0<br><span>CCI</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step" onclick="toggleStep(1)">Steps 1-2<br><span>PSR</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step" onclick="toggleStep(2)">Step 3<br><span>Positioning</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step" onclick="toggleStep(3)">3.5 / 3.75<br><span>Premise + Territory</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step" onclick="toggleStep(4)">Step 4<br><span>LinkedIn + Broadside</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step" onclick="toggleStep(5)">Step 5<br><span>PCI</span></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step" onclick="toggleStep(6)">Step 6<br><span>PCE / CCE</span></div>
+    </div>
+    <div class="detail-panel" id="stepDetail"></div>
+    <div class="section-note">Click any step to see its skill, deliverables, and quality gate</div>
+  </div>
+
+  <div class="arch-section">
+    <div class="arch-header">Cross-Cutting Process Skills - Fire Throughout</div>
+    <div class="layer-row">
+      <div class="layer-card" onclick="toggleCard(this)">
+        <div class="card-title">feedback-protocol</div>
+        <div class="card-subtitle">Every review point</div>
+        <div class="card-detail">Extracts client feedback into 6 categories. Maintains Cumulative Feedback Register. Runs Pre-Delivery QC before every client-facing output ships.</div>
+      </div>
+      <div class="layer-card" onclick="toggleCard(this)">
+        <div class="card-title">post-session-protocol</div>
+        <div class="card-subtitle">After every meeting</div>
+        <div class="card-detail">Processes client transcripts into Project Log updates + direct CCI/PCI document updates. Doesn't flag for later - makes updates now.</div>
+      </div>
+      <div class="layer-card" onclick="toggleCard(this)">
+        <div class="card-title">storyeq-debrief</div>
+        <div class="card-subtitle">End of every session</div>
+        <div class="card-detail">7-check protocol: post-execution review, cascade check (skill + client), Thinking Ledger, Open Loops, memory edits, licensing readiness capture, session persistence check.</div>
+      </div>
+      <div class="layer-card" onclick="toggleCard(this)">
+        <div class="card-title">voice-audit</div>
+        <div class="card-subtitle">Alignment checks</div>
+        <div class="card-detail">Compares real voice (transcripts) vs. public presence (LinkedIn, website). Classifies gaps as unintentional drift, strategic choice, developmental, or protective.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TAB: Skills -->
+<div class="tab-panel" id="tab-skills">
+  <div class="arch-section">
+    <div class="arch-header">Full Skill Ecosystem - 26 Skills</div>
+    <div class="legend">
+      <div class="legend-item"><div class="legend-swatch" style="background:#B54740"></div>Core Engagement (10)</div>
+      <div class="legend-item"><div class="legend-swatch" style="background:#4B7081"></div>Process / Cross-Cutting (5)</div>
+      <div class="legend-item"><div class="legend-swatch" style="background:#D8B66A"></div>Utility / General (11)</div>
+      <div class="legend-item"><div class="legend-swatch" style="background:#ccc"></div>Roadmap</div>
+    </div>
+    <div class="skill-grid">
+      <div class="skill-pill core">communication-intelligence</div>
+      <div class="skill-pill core">psr-execution</div>
+      <div class="skill-pill core">positioning</div>
+      <div class="skill-pill core">premise-development</div>
+      <div class="skill-pill core">semantic-territory</div>
+      <div class="skill-pill core">linkedin-profile-engine</div>
+      <div class="skill-pill core">broadside</div>
+      <div class="skill-pill core">personal-intelligence</div>
+      <div class="skill-pill core">pce-build</div>
+      <div class="skill-pill core">cce-build</div>
+      <div class="skill-pill process">feedback-protocol</div>
+      <div class="skill-pill process">post-session-protocol</div>
+      <div class="skill-pill process">storyeq-debrief</div>
+      <div class="skill-pill process">voice-audit</div>
+      <div class="skill-pill process">notion-psr-publisher</div>
+      <div class="skill-pill util">pattern-recognition</div>
+      <div class="skill-pill util">workflow-extraction</div>
+      <div class="skill-pill util">engineer-any-prompt</div>
+      <div class="skill-pill util">skill-creator</div>
+      <div class="skill-pill util">skill-updater</div>
+      <div class="skill-pill util">session-debrief (PCE)</div>
+      <div class="skill-pill util">luc-sop-builder</div>
+      <div class="skill-pill util">cowork-brain-builder</div>
+      <div class="skill-pill util">docx / pdf / pptx / xlsx</div>
+      <div class="skill-pill util">canvas-design</div>
+      <div class="skill-pill util">theme-factory</div>
+      <div class="skill-pill gap">content-engine</div>
+      <div class="skill-pill gap">offboarding</div>
+      <div class="skill-pill gap">intake-automation</div>
+      <div class="skill-pill gap">client-reporting</div>
+    </div>
+  </div>
+
+  <div class="arch-section">
+    <div class="arch-header">Plugin Bundles Installed</div>
+    <div class="layer-row">
+      <div class="layer-card" onclick="toggleCard(this)">
+        <div class="card-title">brand-voice</div>
+        <div class="card-subtitle">3 skills</div>
+        <div class="card-detail">Enforcement, guideline generation, discovery - voice management across platforms.</div>
+      </div>
+      <div class="layer-card" onclick="toggleCard(this)">
+        <div class="card-title">sales</div>
+        <div class="card-subtitle">9 skills</div>
+        <div class="card-detail">Call prep, pipeline review, competitive intel, outreach drafting, forecasting, daily briefing, account research, asset creation, call summary.</div>
+      </div>
+      <div class="layer-card" onclick="toggleCard(this)">
+        <div class="card-title">productivity</div>
+        <div class="card-subtitle">4 skills</div>
+        <div class="card-detail">Task management, memory management, start/initialize, update/sync - persistent context across sessions.</div>
+      </div>
+      <div class="layer-card" onclick="toggleCard(this)">
+        <div class="card-title">operations</div>
+        <div class="card-subtitle">9 skills</div>
+        <div class="card-detail">Risk assessment, compliance tracking, runbooks, process docs, vendor review, capacity planning, change requests, process optimization, status reports.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TAB: Data Layers -->
+<div class="tab-panel" id="tab-data">
+  <div class="arch-section">
+    <div class="arch-header">Three Persistence Layers</div>
+    <div class="layer-row">
+      <div class="layer-card" onclick="toggleCard(this)" style="flex:2">
+        <div class="card-title">Client Folders</div>
+        <div class="card-subtitle">20+ active engagements across direct + advisory</div>
+        <div class="card-detail">
+          <strong>Standard scaffold per client:</strong><br>
+          00_Intake/ &rarr; 01_CCI/ &rarr; 02_PSR/ &rarr; 03_Positioning/ &rarr; 04_Territory/ &rarr; 05_LinkedIn/ &rarr; 06_Engine/ &rarr; 07_PCI/ &rarr; 08_Feedback/<br><br>
+          <strong>Naming:</strong> [PREFIX]_[INITIALS]_[Doc].md - no dates, underscores only, _V1/_V2 versioning<br><br>
+          <strong>Each client has:</strong> _status.md tracking current step, completed work, open loops, last updated<br><br>
+          <strong>Two tracks:</strong> Direct StoryEQ clients + Advisory clients (via Level Up Creators partnership)
+        </div>
+      </div>
+    </div>
+    <div class="layer-row">
+      <div class="layer-card" onclick="toggleCard(this)">
+        <div class="card-title">_memory/ (15 files)</div>
+        <div class="card-subtitle">Persistent business context</div>
+        <div class="card-detail">
+          <strong>Business:</strong> business-plan, icp, products, brand-architecture, brand-voice<br>
+          <strong>People:</strong> people, clients<br>
+          <strong>Knowledge:</strong> core-philosophies, research-foundations, knowledge-domains, terminology<br>
+          <strong>Operational:</strong> decisions, learnings, judgment-patterns, proof-assets<br><br>
+          Updated by storyeq-debrief + post-session-protocol every session. This is how context compounds across disconnected Cowork sessions.
+        </div>
+      </div>
+      <div class="layer-card" onclick="toggleCard(this)">
+        <div class="card-title">_system/ (12+ docs)</div>
+        <div class="card-subtitle">Canonical reference + architecture</div>
+        <div class="card-detail">
+          <strong>Core:</strong> Engagement Workflow (licensing artifact), Client Folder System, CCI Operating Manual<br>
+          <strong>Architecture:</strong> Cowork Redesign, Data Architecture<br>
+          <strong>Strategy:</strong> Offboarding protocol, ADHD-aware design framework<br>
+          <strong>Meta:</strong> templates/, reference/, skill_archive/, skill_updates/
+        </div>
+      </div>
+      <div class="layer-card" onclick="toggleCard(this)">
+        <div class="card-title">CLAUDE.md (2 layers)</div>
+        <div class="card-subtitle">Session governance</div>
+        <div class="card-detail">
+          <strong>Global CLAUDE.md:</strong> Identity, communication style, new client triggers, universal rules, operating priorities<br>
+          <strong>Workspace CLAUDE.md:</strong> Licensing readiness behaviors, CRM protocol, safety rules, tiered actions, PCE reference, end-of-session compounding<br><br>
+          These two layers govern every session before any skill fires.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TAB: Connectors -->
+<div class="tab-panel" id="tab-connectors">
+  <div class="arch-section">
+    <div class="arch-header">Connected Services</div>
+    <div class="connector-row">
+      <div class="connector"><div class="connector-dot"></div>Superhuman / Gmail</div>
+      <div class="connector"><div class="connector-dot"></div>Google Calendar</div>
+      <div class="connector"><div class="connector-dot"></div>Notion</div>
+      <div class="connector"><div class="connector-dot"></div>Figma</div>
+      <div class="connector"><div class="connector-dot"></div>Google Drive</div>
+      <div class="connector"><div class="connector-dot"></div>Canva</div>
+    </div>
+  </div>
+  <div class="arch-section">
+    <div class="arch-header">How Connectors Map to Work</div>
+    <div class="layer-row">
+      <div class="layer-card" onclick="toggleCard(this)">
+        <div class="card-title">Superhuman / Gmail</div>
+        <div class="card-subtitle">Email intake + CRM sync</div>
+        <div class="card-detail">Client communications, transcript delivery, discovery call confirmations, proposal sends. Email-to-CRM sync fires when emails relate to CRM contacts. Draft-only - never sends without approval.</div>
+      </div>
+      <div class="layer-card" onclick="toggleCard(this)">
+        <div class="card-title">Google Calendar</div>
+        <div class="card-subtitle">Session scheduling</div>
+        <div class="card-detail">Client session scheduling, discovery calls, engagement timing. Read + create events. Confirm before modifying existing events. New prospect detection via upcoming calls.</div>
+      </div>
+      <div class="layer-card" onclick="toggleCard(this)">
+        <div class="card-title">Notion</div>
+        <div class="card-subtitle">CRM + publishing</div>
+        <div class="card-detail">CRM database for pipeline management. PSR publishing via notion-psr-publisher. SOP knowledgebase. Thinking Ledger + Open Loops. Read freely, confirm before writes.</div>
+      </div>
+    </div>
+    <div class="layer-row">
+      <div class="layer-card" onclick="toggleCard(this)">
+        <div class="card-title">Figma</div>
+        <div class="card-subtitle">Design system</div>
+        <div class="card-detail">Visual artifacts, brand guidelines reference, component systems. Used for broadside design, branded visuals, and design system consistency.</div>
+      </div>
+      <div class="layer-card" onclick="toggleCard(this)">
+        <div class="card-title">Google Drive</div>
+        <div class="card-subtitle">File backup + sharing</div>
+        <div class="card-detail">Backup storage, shared documents with clients and partners. Secondary to local file system for active work.</div>
+      </div>
+      <div class="layer-card" onclick="toggleCard(this)">
+        <div class="card-title">Canva</div>
+        <div class="card-subtitle">Visual assets</div>
+        <div class="card-detail">Graphics, presentations, social media assets, branded visuals. Used alongside canvas-design skill and theme-factory for artifact styling.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TAB: Practitioner PCE -->
+<div class="tab-panel" id="tab-pce">
+  <div class="arch-section">
+    <div class="arch-header">Practitioner's Personal Context Engine</div>
+    <div class="section-note" style="margin-bottom: 12px; margin-top: 0;">The practitioner runs the full methodology on themselves. This is both the calibration model and proof of concept.</div>
+    <div class="layer-row">
+      <div class="layer-card" onclick="toggleCard(this)">
+        <div class="card-title">01_CCI/ - 7 Documents</div>
+        <div class="card-subtitle">Practitioner-facing source of truth</div>
+        <div class="card-detail">
+          Communication Profile, DDG, Voice Audit, Content Samples, Content Instructions, Project Instructions, Project Log<br><br>
+          Updates flow CCI to PCI. The practitioner's own Communication Intelligence becomes the calibration standard for all client work.
+        </div>
+      </div>
+      <div class="layer-card" onclick="toggleCard(this)">
+        <div class="card-title">07_PCI/ - 6 Documents</div>
+        <div class="card-subtitle">Client-facing transforms</div>
+        <div class="card-detail">
+          Communication Map, How I Work Best, Content Instructions, Content Samples, Voice Audit, Package Guide<br><br>
+          All transformed from CCI. These are what external systems and collaborators see.
+        </div>
+      </div>
+      <div class="layer-card" onclick="toggleCard(this)">
+        <div class="card-title">PCE Engine - Activated</div>
+        <div class="card-subtitle">All 4 test prompts passed</div>
+        <div class="card-detail">
+          Engine Instructions, File Manifest, Test Prompts - fully operational.<br><br>
+          Governs how AI works with the practitioner as subject: voice rules, interaction style, boundaries, content QA checklist.
+        </div>
+      </div>
+    </div>
+    <div class="gap-flag" style="margin-top:12px">
+      <strong>In progress:</strong> PSR Steps 1-2, Positioning, Premise/Territory. The practitioner's own completed work is the ultimate calibration model for licensing.
+    </div>
+  </div>
+</div>
+
+<!-- TAB: Roadmap -->
+<div class="tab-panel" id="tab-roadmap">
+  <div class="arch-section">
+    <div class="arch-header">What's Next - Prioritized</div>
+    <div class="gap-flag">
+      <strong>1. Content Engine Skill</strong><br>
+      Territory Map defines the 5-7 topic lanes, but no skill yet operationalizes them into recurring content production (calendar, cadence, post drafting). This is where the methodology currently hands off to the client. High-value for both direct clients and licensing.
+    </div>
+    <div class="gap-flag">
+      <strong>2. Intake Automation</strong><br>
+      New client setup works via trigger commands, but pre-screen parsing, calendar-to-CRM detection, and transcript routing are separate manual paths. A single intake skill could unify these.
+    </div>
+    <div class="gap-flag">
+      <strong>3. Client Progress Dashboard</strong><br>
+      Per-client status files + CRM exist, but no unified cross-client view showing pipeline stage, hours invested, deliverables completed, and next actions.
+    </div>
+    <div class="gap-flag">
+      <strong>4. Offboarding Skill</strong><br>
+      Protocol exists as a document but isn't yet codified as a quality-gated skill. No automated archive, no final CRM update, no referral-readiness check.
+    </div>
+    <div class="gap-flag">
+      <strong>5. Practitioner Calibration Completion</strong><br>
+      CCI + PCI complete and engine activated. PSR, Positioning, and Premise/Territory are pending. This is the calibration model the licensing pitch needs.
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <span>StoryEQ&trade; &mdash; Built on Claude Cowork</span>
+  <a href="https://beintentional.xyz" target="_blank" rel="noopener">beintentional.xyz</a>
+</div>
+
+<script>
+  // Tab switching
+  function showTab(tabId) {
+    document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
+    document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+    document.getElementById('tab-' + tabId).classList.add('active');
+    event.target.classList.add('active');
+  }
+
+  // Card expand/collapse
+  function toggleCard(el) {
+    var detail = el.querySelector('.card-detail');
+    if (detail) {
+      detail.classList.toggle('show');
+      el.classList.toggle('expanded');
+    }
+  }
+
+  // Step detail panel
+  var stepData = [
+    {
+      title: 'Step 0 - Communication Intelligence (CCI)',
+      skill: 'communication-intelligence',
+      deliverables: 'Communication Profile, DDG, Voice Audit, Content Samples, Content Instructions, Project Instructions, Project Log (7 docs)',
+      gate: 'CCI Completion Checklist - 14 mandatory items before PSR begins',
+      timing: '~8-12 hours'
+    },
+    {
+      title: 'Steps 1-2 - Personal Story Report (PSR)',
+      skill: 'psr-execution',
+      deliverables: 'Step 1: Story Audit (canon events, constants, themes, throughlines). Step 2: Story Analysis (strengths, UVPs, differentiators)',
+      gate: '4-gate QC sequence (structural, analytical, voice, presentation)',
+      timing: '~12-16 hours'
+    },
+    {
+      title: 'Step 3 - Positioning',
+      skill: 'positioning',
+      deliverables: 'Readiness Assessment, Positioning Framework, Complete Positioning Document (ICP, competitive diff, short/long-term strategy)',
+      gate: 'Readiness Assessment must pass. Feedback extraction required before execution.',
+      timing: '~8-10 hours'
+    },
+    {
+      title: 'Steps 3.5 + 3.75 - Premise + Semantic Territory',
+      skill: 'premise-development + semantic-territory',
+      deliverables: '3.5: Central assertion (Bolder + Measured framings). 3.75: Territory Map (5-7 topic lanes, three-way alignment check, signal language)',
+      gate: 'Approved Positioning V2 required. Territory bridges to all downstream content + profile work.',
+      timing: '~6-8 hours'
+    },
+    {
+      title: 'Step 4 - LinkedIn + Broadside',
+      skill: 'linkedin-profile-engine + broadside',
+      deliverables: 'LinkedIn: headline, About, Featured strategy, banner direction with voice calibration. Broadside: single-page narrative artifact',
+      gate: 'Voice calibration table, baseline assessment, revision vs. reframe protocol, AI scrub',
+      timing: '~6-8 hours'
+    },
+    {
+      title: 'Step 5 - Personal Context Intelligence (PCI)',
+      skill: 'personal-intelligence',
+      deliverables: '6 client-facing documents: Communication Map, How I Work Best, Content Instructions, Content Samples, Voice Audit, Package Guide',
+      gate: '5 quality tests + delivery QA. CCI to PCI transformation with voice flip (practitioner to second person).',
+      timing: '~6-8 hours'
+    },
+    {
+      title: 'Step 6 - Engine Build (PCE / CCE)',
+      skill: 'pce-build + cce-build',
+      deliverables: 'PCE: 3-tier personal AI environment (Project, Cowork, Code). CCE: team-facing environment with Communication Intelligence Brief + voice layer + SOPs',
+      gate: 'Test prompt sequence must pass. Tier selection based on client technical capability.',
+      timing: '~8-12 hours'
+    }
+  ];
+
+  var activeStep = null;
+
+  function toggleStep(idx) {
+    var panel = document.getElementById('stepDetail');
+    var steps = document.querySelectorAll('.flow-step');
+
+    if (activeStep === idx) {
+      panel.classList.remove('show');
+      steps.forEach(function(s, i) { if (i === idx) s.classList.remove('active'); });
+      activeStep = null;
+      return;
+    }
+
+    var stepEls = Array.from(steps);
+    stepEls.forEach(function(s) { s.classList.remove('active'); });
+    stepEls[idx].classList.add('active');
+
+    var d = stepData[idx];
+    panel.innerHTML =
+      '<div style="margin-bottom:6px"><strong style="color:#B54740">' + d.title + '</strong></div>' +
+      '<div style="margin-bottom:5px"><span class="badge badge-blue">Skill</span> ' + d.skill + '</div>' +
+      '<div style="margin-bottom:5px"><span class="badge badge-red">Deliverables</span> ' + d.deliverables + '</div>' +
+      '<div style="margin-bottom:5px"><span class="badge badge-gold">Quality Gate</span> ' + d.gate + '</div>' +
+      '<div><span class="badge badge-gray">Timing</span> ' + d.timing + '</div>';
+    panel.classList.add('show');
+    activeStep = idx;
+  }
+</script>
+
+</body>
+</html>
