@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASU Positioning</title>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{--red:#B54740;--steel:#4B7081;--gold:#D8B66A;--dark:#272521;--light:#EFEEEC;--white:#FFFFFF}
+  body{font-family:'Inter',sans-serif;background:var(--white);color:var(--dark);line-height:1.5;font-size:14px}
+  h2{font-family:'Big Shoulders Display',sans-serif;font-weight:700;line-height:1.15}
+
+  /* cover */
+  .cover{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:80px 64px;background:var(--dark);color:var(--white);position:relative}
+  .cover::before{content:'';position:absolute;bottom:0;left:0;width:100%;height:4px;background:linear-gradient(90deg,var(--red),var(--gold),var(--steel))}
+  .cl{font-family:'Big Shoulders Display',sans-serif;font-size:13px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:24px}
+  .cover h1{font-family:'Big Shoulders Display',sans-serif;font-size:58px;font-weight:800;line-height:1.05;margin-bottom:16px}
+  .cs{font-size:18px;font-weight:300;color:rgba(255,255,255,0.55);margin-bottom:48px}
+  .cm{font-size:12px;color:rgba(255,255,255,0.3)}
+
+  /* shared */
+  .s{padding:52px 64px;max-width:920px;margin:0 auto;border-bottom:1px solid #e8e6e1}
+  .s:last-of-type{border-bottom:none}
+  .sn{font-family:'Big Shoulders Display',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--red);margin-bottom:6px}
+
+  /* narrative */
+  .nar{background:var(--light);padding:56px 64px}
+  .ni{max-width:780px;margin:0 auto}
+  .ni p{font-size:15px;line-height:1.7;margin-bottom:16px}
+  .pull{font-family:'Big Shoulders Display',sans-serif;font-size:20px;font-weight:600;line-height:1.3;color:var(--steel);border-left:3px solid var(--gold);padding-left:20px;margin:28px 0}
+
+  /* positioning hero */
+  .hero{background:var(--dark);padding:48px 64px;text-align:center}
+  .hero-inner{max-width:700px;margin:0 auto}
+  .hero .sn{color:var(--gold)}
+  .hero-label{font-family:'Big Shoulders Display',sans-serif;font-size:32px;font-weight:800;color:var(--white);margin-bottom:12px;line-height:1.1}
+  .hero-line{font-size:15px;color:rgba(255,255,255,0.6);line-height:1.55}
+
+  /* bridge */
+  .br{display:grid;grid-template-columns:1fr 1fr;gap:0;margin:12px 0;border-radius:8px;overflow:hidden;border:1px solid #e0ddd6}
+  .bc{padding:20px 22px;font-size:13.5px;line-height:1.5;color:#444}
+  .bc:first-child{background:var(--white);border-right:1px solid #e0ddd6}
+  .bc:last-child{background:var(--light)}
+  .bl{font-family:'Big Shoulders Display',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--steel);margin-bottom:8px}
+
+  /* cards */
+  .c{padding:16px 20px;border-radius:8px;border:1px solid #e8e6e1;border-left:3px solid var(--red);margin-bottom:8px}
+  .ch{font-family:'Big Shoulders Display',sans-serif;font-size:16px;font-weight:700;color:var(--dark);margin-bottom:2px}
+  .c p{font-size:13px;color:#666;line-height:1.45}
+
+  /* gold cards (perspectives) */
+  .gc{padding:14px 18px;border-radius:8px;background:#f5edd8;border:1px solid #e8dfc0;margin-bottom:8px}
+  .gc .ch{font-size:15px}
+  .gc p{font-size:12.5px;color:#555;line-height:1.4}
+
+  /* steel cards (market) */
+  .sc{display:inline-block;padding:10px 16px;border-radius:6px;background:#dce5e9;border:1px solid #c4d2da;margin:0 6px 8px 0;font-size:12.5px;color:#444;line-height:1.35}
+  .sc strong{font-family:'Big Shoulders Display',sans-serif;font-size:13px;font-weight:700;color:var(--steel);display:block;margin-bottom:1px}
+
+  /* red cards (problems) */
+  .rc{padding:12px 16px;border-radius:8px;background:#f2e0df;border:1px solid #e0c5c3;margin-bottom:6px}
+  .rq{font-family:'Big Shoulders Display',sans-serif;font-size:14px;font-weight:700;color:var(--red)}
+  .rc p{font-size:12px;color:#666;margin-top:2px}
+
+  /* 3-column grid for outcomes */
+  .cg{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-top:14px}
+  @media(max-width:700px){.cg{grid-template-columns:1fr}}
+  .cg .c{margin-bottom:0;height:100%}
+
+  /* 2-column grid for buyer-voice cards */
+  .rcg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+  @media(max-width:700px){.rcg{grid-template-columns:1fr}}
+  .rcg .rc{margin-bottom:0;height:100%}
+
+  /* audience hero callout */
+  .aud-hero{background:var(--light);border-left:4px solid var(--gold);padding:24px 28px;border-radius:6px;margin:0 0 28px}
+  .aud-hero .lead{font-family:'Big Shoulders Display',sans-serif;font-size:20px;font-weight:600;color:var(--dark);line-height:1.35;margin-bottom:10px}
+  .aud-hero .so{font-size:14px;color:#555;line-height:1.5}
+  .aud-hero .so strong{color:var(--red)}
+
+  /* client-type chips */
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 6px}
+  .chip{display:inline-block;padding:6px 12px;border-radius:999px;background:#dce5e9;border:1px solid #c4d2da;font-size:12px;color:var(--steel);font-weight:500}
+  .chip-alt{background:#f5edd8;border-color:#e8dfc0;color:#8a6f2e}
+  .chip-label{font-family:'Big Shoulders Display',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#888;display:block;margin:14px 0 4px}
+
+  /* architecture diagram */
+  .arch{display:flex;flex-direction:column;align-items:center;gap:12px;margin:18px 0 8px}
+  .arch-top{padding:18px 28px;background:var(--dark);color:var(--white);border-radius:8px;text-align:center;min-width:280px}
+  .arch-top .name{font-family:'Big Shoulders Display',sans-serif;font-size:22px;font-weight:800;letter-spacing:1px}
+  .arch-top .desc{font-size:12px;color:rgba(255,255,255,0.65);margin-top:4px}
+  .arch-connector{width:2px;height:18px;background:var(--gold)}
+  .arch-bottom{display:grid;grid-template-columns:1fr 1fr;gap:14px;width:100%}
+  @media(max-width:700px){.arch-bottom{grid-template-columns:1fr}}
+  .arch-prac{padding:18px 22px;border-radius:8px;border:1px solid #e0ddd6;background:var(--light)}
+  .arch-prac .name{font-family:'Big Shoulders Display',sans-serif;font-size:18px;font-weight:700;color:var(--red);margin-bottom:6px}
+  .arch-prac p{font-size:13px;color:#555;line-height:1.45}
+
+  /* long term */
+  .lt{background:var(--dark);color:var(--white);padding:52px 64px}
+  .lti{max-width:780px;margin:0 auto}
+  .lt .sn{color:var(--gold)}
+  .lt h2{color:var(--white);font-size:26px;margin-bottom:16px}
+  .lt p{font-size:14px;color:rgba(255,255,255,0.65);line-height:1.55;margin-bottom:10px}
+
+  .footer{padding:24px 64px;text-align:center;font-size:11px;color:#bbb}
+  @media print{.cover{min-height:auto;padding:40px}.s,.nar,.hero,.lt{padding:32px 24px}}
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cl">StoryEQ - Positioning</div>
+  <h1>Amrit Sandhu</h1>
+  <div class="cs">Strategic direction - V5</div>
+  <div class="cm">Kristina Flynn | StoryEQ | May 2026</div>
+</div>
+
+<!-- 01 YOUR STORY -->
+<div class="nar">
+  <div class="ni">
+    <div class="sn">01</div>
+    <h2 style="font-size:28px;margin-bottom:20px">Thirty years in service. The rooms keep changing. The work underneath them doesn't.</h2>
+
+    <p><strong>The restaurant.</strong> Your father saw a homeless man walking past the front window and said "ASU, Go get him, sit him down on a table. I'll send you some food." Your mum would lose it - customers walking past, homeless guy in front. Your dad didn't care. The man got fed before the paying customers did. That was your first model of how to be in the world. Service as the way the household ran, before anyone called it a value.</p>
+
+    <p><strong>The gurdwara.</strong> Your tradition has a word for what your dad was doing. Seva. Selfless service. He'd tell you "make sure you clean everybody's shoes." You called it "the lowliest of tasks." You remember it as "this weird sense of satisfaction and a weird kind of humility pride. Really satisfying. Really cool." Singh, your middle name, means lion. Warrior saint. Fierce and humble in the same breath. You repeated warrior saint three times in a single breath: "Being Sikh, we're spiritual warriors by nature. Warrior saints. It's like a huge thing."</p>
+
+    <p><strong>Engineering.</strong> Seven years at Multiplex, 6am to 6pm, six days a week. 99.05% top of class, the J.N. McNichol Prize. You experienced the years as misalignment - the whole reason you eventually left. What stayed is the brain you built inside those buildings: structural thinking, load-bearing diagnostic, the discipline of figuring out what holds weight and what doesn't. The training stayed. You stopped doing it in buildings.</p>
+
+    <p><strong>The work now.</strong> When you left engineering in January 2025, the coaching you'd been doing on the side for a decade became the full-time work. The podcast kept compounding - 300+ episodes, nine years, never missed a week, 1.2-2.4M monthly views. 400+ people coached over the decade. Then astrology arrived. Inside three months you'd done 116 readings. Your teacher Debra Silverman came on your podcast and told the audience your graduation reading was the best in the ten years she'd been running her school. You woke up the next day and had sold thirty readings.</p>
+
+    <div class="pull">Restaurant. Gurdwara. Multiplex. The Council. The readings. Same act underneath. The rooms keep changing.</div>
+  </div>
+</div>
+
+<!-- 02 POSITIONING -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="sn" style="color:var(--gold)">02 - Your positioning</div>
+    <div class="hero-label">The Spiritual Servant</div>
+    <div class="hero-line">You're the spiritual servant to the people you've called "people to whom legacy matters" - the ones who've built something real, for whom the pursuit of alignment is no longer optional, and who need someone who can hold the chart, the patterns, the work, and the life simultaneously.</div>
+  </div>
+</div>
+
+<!-- 03 WHY THE SPIRITUAL SERVANT -->
+<div class="nar">
+  <div class="ni">
+    <div class="sn">03 - Why The Spiritual Servant</div>
+    <h2 style="font-size:26px;margin-bottom:18px">Eastern work. Western vocabulary. The translation keeps stopping short.</h2>
+
+    <p>Spiritual Engineer. Inner Engineer. Spiritual Architect. Spiritual Activist. Spiritual Guide. Spiritual Sherpa. You've circled this for months. Each one lands halfway and stops.</p>
+
+    <p>Each name has been an attempt to translate Eastern work into a Western vocabulary that doesn't fully hold it. Engineer for the pragmatists. Activist for the bold ones. Guide for the open ones. Each one trying to make the work legible to a Western spiritual market by softening or reshaping it into something the market already recognises. The work resists the fit, because the work has Eastern roots and the market is Western. Each English word you've reached for has tried to bridge that gap and stopped short.</p>
+
+    <p>Servant is the closest English carrier for seva. Not a direct translation - seva names the act of selfless service, sevadar names the person doing it - but the word that holds the meaning when seva has to travel into one English word. Every other English option dilutes it.</p>
+
+    <p>The risk is real and it's also the point. "Servant" in English carries baggage - subservience, low status. In the Sikh tradition, seva is the highest act - the dissolution of ego. The word holds both meanings simultaneously, and you've held both meanings in your body since childhood. Lion and shoe-cleaner. Warrior and saint. Singh and seva.</p>
+
+    <p>This is the paradox your audience already feels in you. They sense the engineer's brain and the depth practitioner at the same time. They sense the credentials and the humility check at the same time. They sense the warrior and the one who returns the power. They can't name what they're sensing because nobody has named it for them. The Spiritual Servant names it.</p>
+
+    <p>Spiritual Engineer is the strong second. You came up with it yourself, and it works - it captures the rigor under the spiritual content and it's immediately legible. The risk with Engineer is that it leads with the tool, not the orientation. Engineer is the second chapter of your story. Seva is the first.</p>
+
+    <div class="pull">This isn't a marketing claim. It's the first English title that carries the weight of what you've been doing since the restaurant.</div>
+  </div>
+</div>
+
+<!-- 04 THE ARCHITECTURE -->
+<div class="s">
+  <div class="sn">04 - The architecture (a suggestion)</div>
+  <h2 style="font-size:22px;margin-bottom:8px">Stop thinking "two brands." Start thinking one person running two practices.</h2>
+  <p style="font-size:13.5px;color:#666;margin-bottom:8px">Amrit Singh Sandhu sits at the top - the person, not a performed brand. The Spiritual Servant and Inspired Evolution are practices you run, not identities you wear.</p>
+
+  <div class="arch">
+    <div class="arch-top">
+      <div class="name">Amrit Singh Sandhu</div>
+      <div class="desc">The person. The story. The umbrella. Amrit (sweetness). Singh (lion). Sandhu (lineage).</div>
+    </div>
+    <div class="arch-connector"></div>
+    <div class="arch-bottom">
+      <div class="arch-prac">
+        <div class="name">The Spiritual Servant</div>
+        <p>The depth practice. Readings, The Council, 1:1, the network-referred clients. Seva at depth.</p>
+      </div>
+      <div class="arch-prac">
+        <div class="name">Inspired Evolution</div>
+        <p>The media practice. Podcast, community, sponsorships, experiences. Seva at reach.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 05 WHY YOU -->
+<div class="s">
+  <div class="sn">05 - Why you</div>
+  <h2 style="font-size:24px;margin-bottom:14px">This combination doesn't exist anywhere else in the market.</h2>
+
+  <div class="c">
+    <div class="ch">You inherited this. You didn't discover it.</div>
+    <p>Most spiritual practitioners came to spirituality through a crisis or a retreat in their thirties. You were born into it. Your father didn't teach faith - he modelled it. The homeless man at the restaurant. The shoes at the gurdwara. Showing up before the day started for the prayers when nobody else wanted to. This is credibility that can't be trained for. It's formed.</p>
+  </div>
+  <div class="c">
+    <div class="ch">An engineer's brain, pointed at consciousness for ten years</div>
+    <p>99.05%, J.N. McNichol Prize, seven years at Multiplex. Now you read charts the way you used to read structural drawings. Three astrological systems reconciled - Western, Vedic, Hellenistic - into single-word frameworks (Libra = harmony, Leo = express). Debra Silverman: best graduation reading in ten years. Thirty readings sold the day after she said it on your podcast.</p>
+  </div>
+  <div class="c">
+    <div class="ch">You return power. You don't accumulate it.</div>
+    <p>"I'd like to return your power to you. Your chart, your potential, you are living the life." Every time you facilitate, you're handing back what most people in your space spend their careers accumulating. "Touch wood" as humility check. "I don't want to sound cocky." The position you hold is the opposite of what your peers spend their careers building toward, and your audience trusts you for it without being able to name it.</p>
+  </div>
+  <div class="c">
+    <div class="ch">Ten years of facilitation evidence at every depth</div>
+    <p>400+ people coached over the decade. 300+ podcast interviews, never missed a week in nine years. 116 readings in three months. Council members who keep showing up. Other astrologers asking to watch you work. The hours behind the work are real, and the people they've moved through are specific.</p>
+  </div>
+  <div class="c">
+    <div class="ch">You're a synthesizer</div>
+    <p>Ten books a week. Vedic timing, Gene Keys, breathwork, the Upanishads, contemporary psychology - in the same room. The certification stack is real (Mindvalley, Eckhart Tolle, Heart Math, three astrological traditions) but the differentiator isn't the breadth. It's the reconciliation. The engineer looking at contradictory frameworks and asking which word holds all three.</p>
+  </div>
+</div>
+
+<!-- 06 WHAT YOU SEE -->
+<div class="s">
+  <div class="sn">06 - What you see that the market doesn't</div>
+  <h2 style="font-size:24px;margin-bottom:14px">Unique perspectives you already work from.</h2>
+
+  <div class="gc">
+    <div class="ch">"Aetiology, not symptomology"</div>
+    <p>"Leos are attention-seeking" is the symptom. "Leos express, and when they can't, they find fucked up ways to express" is the cause. You ask what's underneath the presentation, every time.</p>
+  </div>
+  <div class="gc">
+    <div class="ch">Same word, different poles</div>
+    <p>Three-modality reconciliation. Every sign holds its gift and its shadow under one word. Harmony. Express. Initiate. A structural reformation of a 4,000-year-old practice. "Borderline blasphemous" - and you're right that it is. It's also yours.</p>
+  </div>
+  <div class="gc">
+    <div class="ch">Return the power</div>
+    <p>You facilitate from beside the person, not above them. "I may be completely off base" - you mean it. People come back because they don't feel reduced. They feel met.</p>
+  </div>
+  <div class="gc">
+    <div class="ch">Practical spirituality</div>
+    <p>Your audience uses the word "grounded" to describe what they get from your podcast. In a market saturated with channelers and UFO content and conspirituality, you hold spirituality and rigor in the same hand because you've lived inside both.</p>
+  </div>
+  <div class="gc">
+    <div class="ch">Seva as professional orientation</div>
+    <p>You don't accumulate authority because you were raised inside a tradition that treats accumulation as the opposite of the work. The disposition was built in before you ever had a chance to perform it. The work you do for clients is the same work your father did at the restaurant.</p>
+  </div>
+</div>
+
+<!-- 07 THE MOMENT -->
+<div class="s">
+  <div class="sn">07 - The moment</div>
+  <h2 style="font-size:24px;margin-bottom:14px">Why the market needs this right now.</h2>
+
+  <div style="margin-bottom:20px">
+    <div class="sc"><strong>Anti-guru moment</strong>Trust in spiritual authority figures has collapsed. The market wants facilitators who don't ask to be elevated.</div>
+    <div class="sc"><strong>Grounded-spiritual gap</strong>Astrology peaks at 100K views on your channel. Purpose content gets 10-20K. The market is asking for the lens without the woo.</div>
+    <div class="sc"><strong>55+ female audience</strong>Underserved by the spiritual coaching space. Your data: 70% female, 75% aged 45-65+. Creatives, coaches, retirees with heart-based ventures.</div>
+    <div class="sc"><strong>Knowing-about vs. knowing</strong>Prospects show up with multiple modalities and multiple teachers. None of it integrated. They can recite. They can't act from it.</div>
+    <div class="sc"><strong>Clarity is what sells</strong>The word appears in every testimonial. Stop over-positioning what you do. Position the outcome they actually name.</div>
+  </div>
+</div>
+
+<!-- 08 THE PEOPLE YOU WORK WITH -->
+<div class="s">
+  <div class="sn">08 - The people you work with</div>
+
+  <div class="aud-hero">
+    <div class="lead">You work with people for whom the pursuit of alignment is no longer optional.</div>
+    <div class="so">The ones building something real - <strong>so they can navigate the work, the body, and the life from deep knowing instead of from more information.</strong></div>
+  </div>
+
+  <div class="chip-label">Who they actually are today</div>
+  <div class="chips">
+    <span class="chip">Mary Magdalene pilgrimage leaders</span>
+    <span class="chip">Breathwork practitioners</span>
+    <span class="chip">Memoir-writing former lawyers</span>
+    <span class="chip">World-renowned artists</span>
+    <span class="chip">Horse wellness teachers</span>
+    <span class="chip chip-alt">Prolific individuals operating at scale</span>
+    <span class="chip chip-alt">Founders with depth-level questions</span>
+  </div>
+  <p style="font-size:12.5px;color:#888;margin-top:4px;font-style:italic">Different demographics. Same orientation: building something they refuse to do half-aligned.</p>
+
+  <div class="chip-label" style="margin-top:22px">What they sound like when they arrive</div>
+  <div class="rcg">
+    <div class="rc"><div class="rq">"I've done the work. The work hasn't done me."</div><p>Retreats, books, teachers, experiences. The collection is real. None of it is integrated. The gap between what they know and what shows up Tuesday.</p></div>
+    <div class="rc"><div class="rq">"I built something real. There's no one to hold it with me."</div><p>Top of the ladder. Money made, impact made. The 3am question is existential. Advisors are transactional. They need counsel, not coaching.</p></div>
+    <div class="rc"><div class="rq">"My life is sending signals my mind hasn't caught up to."</div><p>The body, the business, the deferred decision - all signalling the same misalignment. They need someone who can hold the whole picture without reducing it to one lens.</p></div>
+    <div class="rc"><div class="rq">"I'm drowning in modalities and starving for knowing."</div><p>Multiple modalities, multiple certifications, a shelf full of books. None organized. They can recite. They can't act. They need integration, not more information.</p></div>
+    <div class="rc" style="grid-column:1/-1"><div class="rq">"The pursuit isn't optional and I'm running out of runway."</div><p>Alignment is the thing that organizes their life. The work matters. The timeline is real. They need someone who treats it with the same seriousness they do.</p></div>
+  </div>
+</div>
+
+<!-- 09 WHAT CLIENTS GET -->
+<div class="s">
+  <div class="sn">09 - What clients get</div>
+  <h2 style="font-size:22px;margin-bottom:8px">Three outcomes. Named by your clients, in their words.</h2>
+
+  <div class="cg">
+    <div class="c" style="border-left-color:var(--steel)">
+      <div class="ch">Clarity</div>
+      <p>The word every testimonial reaches for. Not vague clarity - diagnostic clarity. What's load-bearing, what's decorative, what's about to crack. The picture sharpens.</p>
+    </div>
+    <div class="c" style="border-left-color:var(--steel)">
+      <div class="ch">Deep knowing &amp; alignment</div>
+      <p>Your own language for it. The felt sense beneath intuition. Certainty that doesn't need defending because it isn't a conclusion - it's a recognition. People walk out more themselves.</p>
+    </div>
+    <div class="c" style="border-left-color:var(--steel)">
+      <div class="ch">Power returned</div>
+      <p>Capacity to navigate without you. The opposite of dependency. You make people more capable, and the work compounds because they refer the people who notice the shift.</p>
+    </div>
+  </div>
+</div>
+
+<!-- 10 WHERE THIS GOES -->
+<div class="lt">
+  <div class="lti">
+    <div class="sn">10 - Where this could go</div>
+    <h2>Five paths that could grow from the work you're doing right now.</h2>
+    <p style="font-style:italic;margin-bottom:14px">Not a roadmap. Not a commitment. A map of what's already starting to take shape.</p>
+    <p><strong style="color:var(--gold)">1. A defined counsel practice for prolific individuals.</strong> The clients who've come in through podcast relationships are the prototype. Naming the work, defining the cadence options, capping the number at 10-15 to protect depth. Highest-margin, lowest-time-load path.</p>
+    <p><strong style="color:var(--gold)">2. The Council growing from 5 to 20-30 members.</strong> Retention has improved since the price drop and the quarterly deep dives. If the masterclass library proves out, the next layer is scaling membership while protecting the cadence that makes it work.</p>
+    <p><strong style="color:var(--gold)">3. Experiences as a third Inspired Evolution stream.</strong> The 11/11 Egypt retreat is testing this. Intensive depth in person, podcast guests as co-facilitators. If it works, you have a model for one or two retreats a year.</p>
+    <p><strong style="color:var(--gold)">4. AstroSelf - the platform play.</strong> The domain is yours. The methodology can run at scale if the platform is right. Longer horizon, different business. Doesn't need to be solved now.</p>
+    <p><strong style="color:var(--gold)">5. The methodology as licensable IP.</strong> The keyword reconciliation, aetiology-over-symptomology, the Power Return Protocol, seva-grounded facilitation. Teachable. At some point, training other practitioners to run versions of the work becomes a path that compounds without requiring more of your time.</p>
+    <p style="margin-top:14px">None of these need to be chosen now. The five paths share a substrate - the positioning underneath them. That's what we're locking right now. Everything else gets easier to decide once that's set.</p>
+  </div>
+</div>
+
+<div class="footer">POS_ASU_V5 | Kristina Flynn | StoryEQ | May 2026</div>
+
+</body>
+</html>
