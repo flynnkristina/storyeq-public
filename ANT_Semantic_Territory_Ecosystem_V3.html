@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Semantic Territory Ecosystem - Amanda Northcutt - V3</title>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    color: #272521;
+    background: #FFFFFF;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px;
+  }
+
+  .eco {
+    width: 100%;
+    max-width: 840px;
+  }
+
+  /* ---- PREMISE ---- */
+  .premise {
+    text-align: center;
+    padding: 40px 24px 24px;
+    position: relative;
+  }
+
+  .premise-ghost {
+    font-family: 'Big Shoulders Display', sans-serif;
+    font-weight: 900;
+    font-size: 110px;
+    letter-spacing: 14px;
+    color: #B54740;
+    opacity: 0.07;
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    pointer-events: none;
+    user-select: none;
+    white-space: nowrap;
+  }
+
+  .premise-main {
+    font-family: 'Big Shoulders Display', sans-serif;
+    font-weight: 900;
+    font-size: 42px;
+    letter-spacing: 8px;
+    color: #B54740;
+    position: relative;
+  }
+
+  .premise-tagline {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #4B7081;
+    margin-top: 8px;
+  }
+
+  .premise-quote {
+    font-size: 15px;
+    font-weight: 400;
+    font-style: italic;
+    color: #5A5751;
+    margin-top: 16px;
+    line-height: 1.5;
+  }
+
+  /* ---- SPLIT HEADER ---- */
+  .split {
+    display: flex;
+    align-items: center;
+    padding: 32px 24px 12px;
+    gap: 12px;
+  }
+
+  .split-label {
+    font-family: 'Big Shoulders Display', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .split-label.yours { color: #B54740; }
+  .split-label.public { color: #8A8A8A; }
+
+  .split-line {
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(90deg, #B54740, #D8B66A 40%, #ccc 100%);
+    border-radius: 1px;
+  }
+
+  /* ---- LANE GRID ---- */
+  .lanes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px 8px;
+    padding: 0 24px 16px;
+  }
+
+  .lane {
+    padding: 20px;
+    border-radius: 12px;
+    position: relative;
+  }
+
+  .lane-num {
+    font-family: 'Big Shoulders Display', sans-serif;
+    font-weight: 800;
+    font-size: 32px;
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    opacity: 0.06;
+    color: #272521;
+  }
+
+  .lane.yours {
+    background: #FFFFFF;
+    border: 2px solid #EFEEEC;
+    border-left: 4px solid #B54740;
+  }
+
+  .lane.public {
+    background: #F8F7F5;
+    border: 1px solid #EFEEEC;
+    border-left: 4px solid #D6D4D0;
+  }
+
+  .lane-name {
+    font-family: 'Big Shoulders Display', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: 0.5px;
+    margin-bottom: 2px;
+  }
+
+  .lane.yours .lane-name { color: #B54740; }
+  .lane.public .lane-name { color: #8A8A8A; }
+
+  .lane-sub {
+    font-size: 12px;
+    color: #8A8A8A;
+    margin-bottom: 10px;
+  }
+
+  .pill {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 4px;
+    margin-bottom: 12px;
+  }
+
+  .pill-is { background: #B54740; color: #fff; }
+  .pill-after { background: #4B7081; color: #fff; }
+  .pill-internal { background: #D8B66A; color: #272521; }
+  .pill-why { background: #4B7081; color: #fff; }
+  .pill-proof { background: #4B7081; color: #fff; }
+  .pill-cost { background: #8A8A8A; color: #fff; }
+
+  .your-words {
+    font-size: 15px;
+    font-weight: 400;
+    font-style: italic;
+    line-height: 1.6;
+    color: #3A3835;
+    margin-bottom: 4px;
+  }
+
+  .pub-status {
+    font-size: 13px;
+    line-height: 1.6;
+    color: #6B6965;
+  }
+
+  .pub-status strong {
+    color: #272521;
+    font-weight: 600;
+  }
+
+  .pub-status .gap-callout {
+    display: block;
+    margin-top: 10px;
+    font-weight: 600;
+    color: #B54740;
+    font-size: 12px;
+  }
+
+  .energy {
+    margin-top: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .energy-track {
+    flex: 1;
+    height: 4px;
+    border-radius: 2px;
+    background: #EFEEEC;
+  }
+
+  .energy-bar {
+    height: 100%;
+    border-radius: 2px;
+  }
+
+  .e-highest .energy-bar { width: 100%; background: #B54740; }
+  .e-high .energy-bar { width: 80%; background: #D8B66A; }
+  .e-high-push .energy-bar { width: 88%; background: #D8B66A; }
+  .e-med-high .energy-bar { width: 65%; background: #4B7081; }
+
+  .energy-text {
+    font-size: 11px;
+    font-weight: 500;
+    color: #8A8A8A;
+    white-space: nowrap;
+  }
+
+  .cong {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 8px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  .cong-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .cong-miss .cong-dot { background: #B54740; }
+  .cong-miss { color: #B54740; }
+  .cong-gap .cong-dot { background: #D8B66A; }
+  .cong-gap { color: #9A8545; }
+
+  .v3 {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #B54740;
+    padding: 4px 10px;
+    border: 2px solid #B54740;
+    border-radius: 4px;
+    margin-top: 10px;
+  }
+
+  /* ---- SIGNALS ---- */
+  .signals {
+    padding: 24px 24px 16px;
+  }
+
+  .sec-title {
+    font-family: 'Big Shoulders Display', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .sec-title.red { color: #B54740; }
+  .sec-title.blue { color: #4B7081; }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .chip {
+    font-size: 13px;
+    font-weight: 400;
+    font-style: italic;
+    padding: 6px 14px;
+    border-radius: 24px;
+    background: #fff;
+    border: 1px solid #D6D4D0;
+    color: #3A3835;
+  }
+
+  .chip.new {
+    border-color: #B54740;
+    background: #FFF8F7;
+    color: #B54740;
+  }
+
+  .chip.new::after {
+    content: '  new';
+    font-size: 9px;
+    font-style: normal;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    opacity: 0.7;
+  }
+
+  /* ---- CROSSOVER ---- */
+  .crossover {
+    padding: 8px 24px 24px;
+  }
+
+  .cross-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .cross-item {
+    font-size: 12px;
+    line-height: 1.4;
+    padding: 8px 14px;
+    border-radius: 8px;
+    background: #F2F6F8;
+    border: 1px solid #DDE6EB;
+    color: #3A3835;
+  }
+
+  .cross-item .tag {
+    display: block;
+    font-size: 10px;
+    font-weight: 700;
+    color: #4B7081;
+    letter-spacing: 1px;
+    margin-bottom: 2px;
+  }
+
+  /* ---- FOOTER ---- */
+  .foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px 20px;
+    border-top: 1px solid #EFEEEC;
+    margin: 0 24px;
+  }
+
+  .foot-brand {
+    font-family: 'Big Shoulders Display', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 3px;
+    color: #B54740;
+  }
+
+  .foot-status {
+    font-size: 11px;
+    color: #8A8A8A;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+  }
+
+  @media print {
+    body { padding: 20px; }
+    .lane.yours { break-inside: avoid; }
+    .lane.public { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<div class="eco">
+
+  <div class="premise">
+    <div class="premise-ghost">SEEN.</div>
+    <div class="premise-main">SEEN.</div>
+    <div class="premise-tagline">YOUR PREMISE. THE CENTER OF EVERY LANE.</div>
+    <div class="premise-quote">"someone who sees it and has the expertise to help you build it"</div>
+  </div>
+
+  <div class="split">
+    <span class="split-label yours">WHO YOU ARE IN THE ROOM</span>
+    <div class="split-line"></div>
+    <span class="split-label public">WHAT YOUR MARKET SEES</span>
+  </div>
+
+  <div class="lanes">
+
+    <div class="lane yours">
+      <div class="lane-num">1</div>
+      <div class="lane-name">WHAT YOU'RE ACTUALLY WORTH</div>
+      <div class="lane-sub">your premise territory</div>
+      <span class="pill pill-is">IS your premise</span>
+      <div class="your-words">"I can see a future that other people cannot see"</div>
+      <div class="energy"><div class="energy-track e-highest"><div class="energy-bar"></div></div><span class="energy-text">Highest</span></div>
+      <div class="cong cong-miss"><span class="cong-dot"></span> Missing from your public presence</div>
+    </div>
+
+    <div class="lane public">
+      <div class="lane-num">1</div>
+      <div class="lane-name">WHAT YOUR MARKET GETS</div>
+      <div class="lane-sub">&nbsp;</div>
+      <div class="pub-status">
+        <strong>Your headline:</strong> "I help consultants create multi 5-figure MRR"<br><br>
+        No seeing language. No premise. No "what you're sitting on."
+      </div>
+    </div>
+
+    <div class="lane yours" style="border-left-color:#D8B66A">
+      <div class="lane-num">3</div>
+      <div class="lane-name" style="color:#9A8545">THE INNER WORK OF BUILDING</div>
+      <div class="lane-sub">your becoming territory</div>
+      <span class="pill pill-internal">INTERNAL version of seeing</span>
+      <div class="your-words">"looking through a paper towel roll"<br>"presentable, acceptable by others, performative"</div>
+      <div class="energy"><div class="energy-track e-high-push"><div class="energy-bar"></div></div><span class="energy-text">High, actively pushing</span></div>
+      <div class="cong cong-miss"><span class="cong-dot"></span> Missing from your public presence</div>
+      <div class="v3">&#9650; ACTIVATE NOW</div>
+    </div>
+
+    <div class="lane public">
+      <div class="lane-num">3</div>
+      <div class="lane-name">WHAT YOUR MARKET GETS</div>
+      <div class="lane-sub">&nbsp;</div>
+      <div class="pub-status">
+        Zero content about your inner work, identity shifts, or the emotional experience of building. Your content stays entirely tactical.
+        <span class="gap-callout">Your raw material now exists. 4 journal entries. Unpublished.</span>
+      </div>
+    </div>
+
+    <div class="lane yours">
+      <div class="lane-num">5</div>
+      <div class="lane-name">BUILDING RIGHT NOW</div>
+      <div class="lane-sub">your real-time territory</div>
+      <span class="pill pill-proof">PROOF you're doing it</span>
+      <div class="your-words">"almost broke my fucking brain doing this"<br>"I'm taking my content back"</div>
+      <div class="energy"><div class="energy-track e-highest"><div class="energy-bar"></div></div><span class="energy-text">Highest</span></div>
+      <div class="cong cong-gap"><span class="cong-dot"></span> Your profile hints, your content doesn't deliver</div>
+    </div>
+
+    <div class="lane public">
+      <div class="lane-num">5</div>
+      <div class="lane-name">WHAT YOUR MARKET GETS</div>
+      <div class="lane-sub">&nbsp;</div>
+      <div class="pub-status">
+        Your About section has a chronological "short life story." No real-time updates, no behind-the-scenes, no lessons from this week.
+        <span class="gap-callout">You turned 40 and took your content back in the same month. Nobody knows.</span>
+      </div>
+    </div>
+
+    <div class="lane yours" style="border-left-color:#4B7081">
+      <div class="lane-num">6</div>
+      <div class="lane-name" style="color:#4B7081">WHAT YOUR BODY ALREADY KNOWS</div>
+      <div class="lane-sub">your resilience territory</div>
+      <span class="pill pill-cost">COST of seeing everything else</span>
+      <div class="your-words">"dragging an anchor behind me"<br>"high capacity person trapped in a low capacity circumstance"</div>
+      <div class="energy"><div class="energy-track e-med-high"><div class="energy-bar"></div></div><span class="energy-text">Medium-high</span></div>
+      <div class="cong cong-miss"><span class="cong-dot"></span> Missing from your public presence</div>
+      <div class="v3">&#9650; NEW MOMENTUM</div>
+    </div>
+
+    <div class="lane public">
+      <div class="lane-num">6</div>
+      <div class="lane-name">WHAT YOUR MARKET GETS</div>
+      <div class="lane-sub">&nbsp;</div>
+      <div class="pub-status">
+        One line in your bio: "Age 27 - Chronic illness forced me to quit a high-paying sales job." Resume bullet. No weight.
+        <span class="gap-callout">Your first self-originated health metaphors exist. Not published.</span>
+      </div>
+    </div>
+
+    <div class="lane yours" style="border-left-color:#4B7081">
+      <div class="lane-num">2</div>
+      <div class="lane-name" style="color:#4B7081">BUSINESS ARCHITECTURE</div>
+      <div class="lane-sub">your building territory</div>
+      <span class="pill pill-after">What happens AFTER the seeing</span>
+      <div class="your-words">"business is literally my vocation"<br>"chief problem solving officer"</div>
+      <div class="energy"><div class="energy-track e-high"><div class="energy-bar"></div></div><span class="energy-text">High</span></div>
+      <div class="cong cong-gap"><span class="cong-dot"></span> Exists in your content but sanitized</div>
+    </div>
+
+    <div class="lane public">
+      <div class="lane-num">2</div>
+      <div class="lane-name">WHAT YOUR MARKET GETS</div>
+      <div class="lane-sub">&nbsp;</div>
+      <div class="pub-status">
+        Your posts cover business structure, pricing, productization. But instructional, not story-driven. No "I built this" narratives. No physical metaphors.
+      </div>
+    </div>
+
+    <div class="lane yours" style="border-left-color:#4B7081">
+      <div class="lane-num">4</div>
+      <div class="lane-name" style="color:#4B7081">WHO GETS TO BUILD WEALTH</div>
+      <div class="lane-sub">your justice territory</div>
+      <span class="pill pill-why">WHY the seeing deficit exists</span>
+      <div class="your-words">"the wrong people have the money"<br>"make your own table"</div>
+      <div class="energy"><div class="energy-track e-high"><div class="energy-bar"></div></div><span class="energy-text">High</span></div>
+      <div class="cong cong-miss"><span class="cong-dot"></span> Missing from your public presence</div>
+    </div>
+
+    <div class="lane public">
+      <div class="lane-num">4</div>
+      <div class="lane-name">WHAT YOUR MARKET GETS</div>
+      <div class="lane-sub">&nbsp;</div>
+      <div class="pub-status">
+        No posts about structural barriers, equity-for-accelerator, or WHY you do this work. Your founding thesis is invisible.
+      </div>
+    </div>
+
+  </div>
+
+  <div class="signals">
+    <div class="sec-title red">YOUR SIGNAL LANGUAGE</div>
+    <div class="chips">
+      <span class="chip">"what you're actually sitting on"</span>
+      <span class="chip">"playing small"</span>
+      <span class="chip">"pulling others up the ladder"</span>
+      <span class="chip">"who do you have to become?"</span>
+      <span class="chip">"terminally exhausted"</span>
+      <span class="chip">"I'm building this right now"</span>
+      <span class="chip">"the last third"</span>
+      <span class="chip">"make your own table"</span>
+      <span class="chip new">"looking through a paper towel roll"</span>
+      <span class="chip new">"dragging an anchor behind me"</span>
+      <span class="chip new">"high capacity / low capacity"</span>
+      <span class="chip new">"chief problem solving officer"</span>
+    </div>
+  </div>
+
+  <div class="crossover">
+    <div class="sec-title blue">WHERE YOUR LANES COLLIDE (STRONGEST CONTENT)</div>
+    <div class="cross-items">
+      <div class="cross-item"><span class="tag">L1 + L2</span>The 15-minute call story</div>
+      <div class="cross-item"><span class="tag">L3 + L5</span>Your content takeback as inner work</div>
+      <div class="cross-item"><span class="tag">L4 + L5</span>"I left Silicon Valley"</div>
+      <div class="cross-item"><span class="tag">L5 + L6</span>Building while the anchor lifts</div>
+      <div class="cross-item"><span class="tag">L3 + L6</span>Your achievement-joy gap</div>
+      <div class="cross-item"><span class="tag">L2 + L4 + L5</span>Your restructuring as justice + architecture + real-time</div>
+      <div class="cross-item"><span class="tag">L3 + L6</span>Paper towel roll (mental + physical)</div>
+    </div>
+  </div>
+
+  <div class="foot">
+    <span class="foot-brand">STORYEQ™</span>
+    <span class="foot-status">V3  ·  MAY 2026  ·  4 MISSING  ·  2 GAP  ·  0 ALIGNED</span>
+  </div>
+
+</div>
+
+</body>
+</html>
